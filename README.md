@@ -75,3 +75,51 @@ helloTuple(["Hello", "world"]);
 helloTuple(["Hello", 5]);
 //function helloTuple<string, number>(message: [string, number]): string
 ```
+
+## generic Function
+
+```ts
+type HelloFunctionGeneric1 = <T>(message: T) => T ;
+const helloFunction1: HelloFunctionGeneric1 = <T>(message: T): T => {
+    return message;
+};
+
+interface HelloFunctionGeneric2 {
+    <T>(message: T): T;
+}
+const helloFunction2: HelloFunctionGeneric2 =  <T>(message: T): T => {
+    return message;
+};
+```
+
+## generic Class
+
+```ts
+class Person <T, K>  {
+    private _name: T;
+    private _age: K;
+
+    constructor(name: T, age: K){
+        this._name = name;
+        this._age = age;
+    }
+}
+new Person("dong",28);
+new Person<string, number>("dong", "lee");  //오류
+```
+
+## generic with extends
+
+```ts
+class personExtends <T extends string | number>{   // 이와같이 상속을 하게 되면 T는 string와 number만 가능하게 된다.
+    private _name: T;
+
+    constructor(name: T){
+        this._name = name;
+    }
+}
+
+new personExtends("dong");
+new personExtends(28);
+new personExtends(true);   //오류
+```
