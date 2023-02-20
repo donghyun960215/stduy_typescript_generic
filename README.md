@@ -123,3 +123,37 @@ new personExtends("dong");
 new personExtends(28);
 new personExtends(true);   //오류
 ```
+
+## keyof & type lookup system
+
+```ts
+function getProp(obj: IPerson, key: "name" | "age"): string | number {   
+  return obj[key];
+}
+// 이 경우 type의 정확성의 문제가 생긴다.
+
+function getProp(obj: IPerson, key: keyof IPerson): IPerson[keyof IPerson] { 
+  return obj[key];
+}
+//IPerson[keyof IPerson]
+// => IPerson["name" | "age"]
+// => IPerson["name"] | IPerson["age"]
+// => string | number
+// kyeof 를 사용해도 결국 uniontype으로 나온다. 그래서 더 진행을 하면
+```
+```ts
+function getProp<T, K extends keyof T>(obj: T, key: K): T[K] {
+//function getProp<IPerson, "name">(obj: IPerson, key: "name"): string
+  return obj[key];
+}
+getProp(person, "name");
+
+function setProp<T, K extends keyof T>(obj: T, key: K, value: T[K]): void {
+//function setProp<IPerson, "name">(obj: IPerson, key: "name", value: string): void
+  obj[key] = value;
+}
+setProp(person, "name", "dong");
+setProp(person, "name", 28);    //오류
+
+//generic 를 같이 사용 해주면 정확한 타입이 입력이 된다.
+```
